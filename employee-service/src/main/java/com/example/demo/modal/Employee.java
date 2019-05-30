@@ -25,7 +25,7 @@ public class Employee {
     List<Project> projects;
 
     @Transient
-    Allocation[] allocation;
+    EmployeeAllocation allocations;
 
     public List<Project> getProjects() {
         return projects;
@@ -67,11 +67,11 @@ public class Employee {
         this.address = address;
     }
 
-    public Allocation[] getAllocation() {
-        return allocation;
+    public EmployeeAllocation getAllocations() {
+        return allocations;
     }
 
-    public void setAllocation(Allocation[] allocation) {
-        this.allocation = allocation;
+    public void setAllocations(EmployeeAllocation allocations) {
+        this.allocations = allocations;
     }
 }

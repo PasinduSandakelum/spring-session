@@ -1,6 +1,7 @@
 package com.pasindu.ems.controller;
 
 import com.pasindu.ems.model.Allocation;
+import com.pasindu.ems.model.EmployeeAllocation;
 import com.pasindu.ems.service.AllocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +36,10 @@ public class AllocationController {
     }
 
     @GetMapping("/allocation/employee/{empId}")
-    public ResponseEntity<List<Allocation>> fetchByEmployeeId(@PathVariable Integer empId) {
-        return ResponseEntity.ok(allocationService.findByEmployeeId(empId));
+    public ResponseEntity<EmployeeAllocation> fetchByEmployeeId(@PathVariable Integer empId) {
+        EmployeeAllocation employeeAllocation = new EmployeeAllocation();
+        employeeAllocation.setEmployeeAllocations(allocationService.findByEmployeeId(empId));
+        return ResponseEntity.ok(employeeAllocation);
     }
 
 

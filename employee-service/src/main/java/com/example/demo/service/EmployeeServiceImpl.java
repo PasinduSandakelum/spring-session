@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.demo.modal.Allocation;
+import com.example.demo.modal.EmployeeAllocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -46,15 +47,17 @@ public class EmployeeServiceImpl implements EmployeeService {
             //fetch project allocation
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders httpHeaders = new HttpHeaders();
+
             //extract token from context
             OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
             httpHeaders.add("Authorization", "bearer ".concat(details.getTokenValue()));
 
-            ResponseEntity<Allocation[]> responseEntity;
+            ResponseEntity<EmployeeAllocation> responseEntity;
             HttpEntity<String> entity = new HttpEntity<>("", httpHeaders);
-            responseEntity = restTemplate.exchange("http://localhost:9090/emscloud/allocation/".concat(employee.getId().toString()), HttpMethod.GET, entity, Allocation[].class);
+            responseEntity = restTemplate.exchange("http://localhost:9090/emscloud/allocation/employee/".concat(employee.getId().toString()), HttpMethod.GET, entity, EmployeeAllocation.class);
             Employee employee1 = optionalEmployee.get();
-            employee1.setAllocation(responseEntity.getBody());
+//            System.out.println(responseEntity.getBody().getEmpId()+">>>>>>>>>");
+            employee1.setAllocations(responseEntity.getBody());
             return employee1;
         } else {
             return null;
