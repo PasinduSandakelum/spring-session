@@ -3,6 +3,9 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +19,7 @@ import com.example.demo.modal.Address;
 import com.example.demo.modal.Employee;
 import com.example.demo.modal.Project;
 import com.example.demo.service.EmployeeService;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping(value = "/emscloud")
@@ -24,6 +28,12 @@ public class EmployeeController {
 	@Autowired
 	EmployeeService employeeService;
 
+	@Bean
+	@LoadBalanced
+	public RestTemplate restTemplate(RestTemplateBuilder builder){
+		return builder.build();
+	}
+	
 	@RequestMapping(value = "/employee", method = RequestMethod.POST)
 	public Employee save(@RequestBody Employee employee) {
 		return employeeService.save(employee);
