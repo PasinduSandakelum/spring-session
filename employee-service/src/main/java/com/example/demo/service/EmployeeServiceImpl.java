@@ -23,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;
 
     @Autowired
     private RestTemplate restTemplate;
