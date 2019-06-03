@@ -25,6 +25,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     @Override
     public Employee save(Employee employee) {
 
@@ -45,7 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Optional<Employee> optionalEmployee = employeeRepository.findById(employee.getId());
         if (optionalEmployee.isPresent()) {
             //fetch project allocation
-            RestTemplate restTemplate = new RestTemplate();
+//            RestTemplate restTemplate = new RestTemplate();
             HttpHeaders httpHeaders = new HttpHeaders();
 
             //extract token from context
@@ -54,7 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
             ResponseEntity<EmployeeAllocation> responseEntity;
             HttpEntity<String> entity = new HttpEntity<>("", httpHeaders);
-            responseEntity = restTemplate.exchange("http://localhost:9090/emscloud/allocation/employee/".concat(employee.getId().toString()), HttpMethod.GET, entity, EmployeeAllocation.class);
+            responseEntity = restTemplate.exchange("http://allocation-service/emscloud/allocation/employee/".concat(employee.getId().toString()), HttpMethod.GET, entity, EmployeeAllocation.class);
             Employee employee1 = optionalEmployee.get();
 //            System.out.println(responseEntity.getBody().getEmpId()+">>>>>>>>>");
             employee1.setAllocations(responseEntity.getBody());
