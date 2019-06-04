@@ -1,3 +1,5 @@
+package com.pasindu.stream;
+
 import java.util.stream.Stream;
 
 public class F9Of {

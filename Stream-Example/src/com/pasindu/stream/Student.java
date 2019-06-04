@@ -1,8 +1,7 @@
-import javax.swing.text.DateFormatter;
-import java.text.SimpleDateFormat;
+package com.pasindu.stream;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Student {
@@ -30,24 +29,20 @@ public class Student {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public static List<Student> getStudentList(){
+    public static List<Student> getStudentList() {
         List<Student> studentList = new ArrayList<>();
-//        studentList.add(new Student("Pasi",new LocalDate(1993,9,4)));
-//        studentList.add(new Student("Pasindu",new Date(1993,9,04)));
-//        studentList.add(new Student("Saman",new Date(2003,10,12)));
-//        studentList.add(new Student("Suja",new Date(1983,02,25)));
-//        studentList.add(new Student("Ishara",new Date(1996,12,23)));
-//        studentList.add(new Student("Kanishka",new Date(2005,6,02)));
-//        studentList.add(new Student("Sumane",new Date(1992,4,01)));
+        studentList.add(new Student("Pasindu", LocalDate.parse("1993-09-04")));
+        studentList.add(new Student("Kalum", LocalDate.parse("2005-10-06")));
+        studentList.add(new Student("Nuwan", LocalDate.parse("1992-04-28")));
+        studentList.add(new Student("Suranga", LocalDate.parse("1983-08-05")));
+        studentList.add(new Student("Pradeep", LocalDate.parse("2010-01-02")));
 
         return studentList;
     }
 
     @Override
     public String toString() {
-        return "Student{" +
-                "name='" + name + '\'' +
-                ", dateOfBirth=" + dateOfBirth+
-                '}';
+        return
+                name + " : "  + dateOfBirth;
     }
 }

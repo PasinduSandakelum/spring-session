@@ -1,3 +1,5 @@
+package com.pasindu.stream;
+
 import java.util.*;
 import java.util.stream.Collectors;
 

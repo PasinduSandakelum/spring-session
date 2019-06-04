@@ -1,3 +1,4 @@
+package com.pasindu.stream;
 import java.util.Comparator;
 
 public class F7Foreach {
