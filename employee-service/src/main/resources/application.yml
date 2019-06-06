@@ -14,4 +14,10 @@ security:
       token-info-uri: http://localhost:8191/oauth/check_token
     client:
       client-id: web
-      client-secret: web 
+      client-secret: web
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
