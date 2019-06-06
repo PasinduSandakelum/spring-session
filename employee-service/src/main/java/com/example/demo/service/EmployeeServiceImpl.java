@@ -70,6 +70,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         //extract token from context
         OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext()
                 .getAuthentication().getDetails();
+
+        System.out.println(details.getTokenValue());
+
         httpHeaders.add("Authorization", "bearer ".concat(details.getTokenValue()));
 
         ResponseEntity<EmployeeAllocation> responseEntity;
