@@ -1,10 +1,12 @@
 package com.example.demo.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import com.example.demo.modal.Allocation;
 import com.example.demo.modal.EmployeeAllocation;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -60,6 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    @HystrixCommand(fallbackMethod = "fetchEmployeesAllocationFallBack")
     public EmployeeAllocation fetchEmployeesAllocation(Employee employee) {
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -76,5 +79,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return responseEntity.getBody();
 
+    }
+
+    public EmployeeAllocation fetchEmployeesAllocationFallBack(Employee employee) {
+        EmployeeAllocation employeeAllocation = new EmployeeAllocation();
+        employeeAllocation.setEmployeeAllocations(Arrays.asList(new Allocation()));
+
+        return employeeAllocation;
     }
 }
