@@ -49,21 +49,32 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (optionalEmployee.isPresent()) {
             //fetch project allocation
 //            RestTemplate restTemplate = new RestTemplate();
-            HttpHeaders httpHeaders = new HttpHeaders();
 
-            //extract token from context
-            OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
-            httpHeaders.add("Authorization", "bearer ".concat(details.getTokenValue()));
-
-            ResponseEntity<EmployeeAllocation> responseEntity;
-            HttpEntity<String> entity = new HttpEntity<>("", httpHeaders);
-            responseEntity = restTemplate.exchange("http://allocation-service/emscloud/allocation/employee/".concat(employee.getId().toString()), HttpMethod.GET, entity, EmployeeAllocation.class);
             Employee employee1 = optionalEmployee.get();
 //            System.out.println(responseEntity.getBody().getEmpId()+">>>>>>>>>");
-            employee1.setAllocations(responseEntity.getBody());
+            EmployeeAllocation employeeAllocations = fetchEmployeesAllocation(employee1);
+            employee1.setAllocations(employeeAllocations);
             return employee1;
         } else {
             return null;
         }
+    }
+
+    public EmployeeAllocation fetchEmployeesAllocation(Employee employee) {
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+
+        //extract token from context
+        OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getDetails();
+        httpHeaders.add("Authorization", "bearer ".concat(details.getTokenValue()));
+
+        ResponseEntity<EmployeeAllocation> responseEntity;
+        HttpEntity<String> entity = new HttpEntity<>("", httpHeaders);
+        responseEntity = restTemplate.exchange("http://allocation-service/emscloud/allocation/employee/"
+                .concat(employee.getId().toString()), HttpMethod.GET, entity, EmployeeAllocation.class);
+
+        return responseEntity.getBody();
+
     }
 }
