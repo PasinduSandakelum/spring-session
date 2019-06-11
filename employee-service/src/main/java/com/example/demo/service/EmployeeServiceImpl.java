@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.demo.hystrix.AllocationCommand;
 import com.example.demo.modal.Allocation;
 import com.example.demo.modal.EmployeeAllocation;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -46,15 +47,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee fetchEmployee(Employee employee) {
+    public Employee fetchEmployee(Employee employee, HttpHeaders httpHeaders) {
         Optional<Employee> optionalEmployee = employeeRepository.findById(employee.getId());
         if (optionalEmployee.isPresent()) {
-            //fetch project allocation
-//            RestTemplate restTemplate = new RestTemplate();
-
             Employee employee1 = optionalEmployee.get();
-//            System.out.println(responseEntity.getBody().getEmpId()+">>>>>>>>>");
-            EmployeeAllocation employeeAllocations = fetchEmployeesAllocation(employee1);
+            AllocationCommand allocationCommand = new AllocationCommand(employee1, httpHeaders, restTemplate);
+
+            EmployeeAllocation employeeAllocations = allocationCommand.execute();
             employee1.setAllocations(employeeAllocations);
             return employee1;
         } else {
@@ -62,7 +61,29 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    /*@Override
     @HystrixCommand(fallbackMethod = "fetchEmployeesAllocationFallBack")
+    public Employee fetchEmployee(Employee employee,HttpHeaders httpHeaders) {
+        Optional<Employee> optionalEmployee = employeeRepository.findById(employee.getId());
+        if (optionalEmployee.isPresent()) {
+            //fetch project allocation
+//            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<EmployeeAllocation> responseEntity;
+            HttpEntity<String> entity = new HttpEntity<>("", httpHeaders);
+            responseEntity = restTemplate.exchange("http://allocation-service/emscloud/allocation/employee/"
+                    .concat(employee.getId().toString()), HttpMethod.GET, entity, EmployeeAllocation.class);
+
+            Employee employee1 = optionalEmployee.get();
+//            System.out.println(responseEntity.getBody().getEmpId()+">>>>>>>>>");
+            EmployeeAllocation employeeAllocations = responseEntity.getBody();
+            employee1.setAllocations(employeeAllocations);
+            return employee1;
+        } else {
+            return null;
+        }
+    }*/
+
+    /*@HystrixCommand(fallbackMethod = "fetchEmployeesAllocationFallBack")
     public EmployeeAllocation fetchEmployeesAllocation(Employee employee) {
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -82,9 +103,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return responseEntity.getBody();
 
-    }
+    }*/
+//    @HystrixCommand(fallbackMethod = "fetchEmployeesAllocationFallBack")
+//    public EmployeeAllocation fetchEmployeesAllocation(Employee employee) {
+//
+//        ResponseEntity<EmployeeAllocation> responseEntity;
+//        HttpEntity<String> entity = new HttpEntity<>("", httpHeaders);
+//        responseEntity = restTemplate.exchange("http://allocation-service/emscloud/allocation/employee/"
+//                .concat(employee.getId().toString()), HttpMethod.GET, entity, EmployeeAllocation.class);
+//
+//        return responseEntity.getBody();
+//
+//    }
 
-    public EmployeeAllocation fetchEmployeesAllocationFallBack(Employee employee) {
+    public EmployeeAllocation fetchEmployeesAllocationFallBack(Employee employee, HttpHeaders httpHeaders) {
         EmployeeAllocation employeeAllocation = new EmployeeAllocation();
         employeeAllocation.setEmployeeAllocations(Arrays.asList(new Allocation()));
 

@@ -1,5 +1,8 @@
 package com.example.demo.modal;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import java.util.List;
 
 import javax.persistence.*;
@@ -12,16 +15,19 @@ public class Employee {
     Integer id;
     String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @Fetch(value = FetchMode.SUBSELECT)
     Address address;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     List<Telephone> telephones;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "employee_project",
             joinColumns = @JoinColumn(name = "eid", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "pid", referencedColumnName = "id"))
+    @Fetch(value = FetchMode.SUBSELECT)
     List<Project> projects;
 
     @Transient
