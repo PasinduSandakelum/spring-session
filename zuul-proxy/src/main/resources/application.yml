@@ -17,9 +17,9 @@ zuul:
   #  ignored-services: *
   prefix: /api
   routes:
-    employeeService:
-      path: /employee-service/**
-      serviceId: employee-service
-    allocationService:
-      path: /allocation-service/**
-      serviceId: allocation-service
+    jpaDate:
+      path: /jpa-date/**
+      serviceId: jpa-date
+#    allocationService:
+#      path: /allocation-service/**
+#      serviceId: allocation-service
