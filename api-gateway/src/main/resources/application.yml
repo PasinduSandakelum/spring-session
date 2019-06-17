@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: api-gateway
+
+server:
+  port: 8762
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    instance-id: ${spring.application.name}-${random.int}
+    hostname: localhost
+
+zuul:
+  prefix: /api
+  routes:
+    jpaDate:
+      path: /employee/**
+      serviceId: employee-service
+
+management:
+  security:
+    enabled: false

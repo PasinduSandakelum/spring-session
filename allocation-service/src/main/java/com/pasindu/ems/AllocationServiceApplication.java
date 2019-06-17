@@ -8,10 +8,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @SpringBootApplication
 @EnableResourceServer
 @EnableEurekaClient
-public class Application {
+public class AllocationServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(AllocationServiceApplication.class, args);
 	}
 
 }

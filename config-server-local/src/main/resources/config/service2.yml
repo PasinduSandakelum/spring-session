@@ -1,0 +1,2 @@
+service:
+  greeting: Hello from config server 2
